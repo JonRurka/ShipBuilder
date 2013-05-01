@@ -24,6 +24,8 @@ public class ControlScript : MonoBehaviour
     private bool _connecting;
     private GameObject _connectingObject;
     float above, below, left, right;
+    private float localDistY;
+    private float localDistX;
     float offsetX;
     float offsetY;
 
@@ -158,22 +160,33 @@ public class ControlScript : MonoBehaviour
                 ray.origin.y >= below)
                )
             {
-                
-                if (selectedTrans.localEulerAngles.z >= -0.1f && selectedTrans.localEulerAngles.z <= 0.1f)
+                localDistY = _connectingObject.transform.position.y - ray.origin.y;
+                localDistX = _connectingObject.transform.position.x - ray.origin.x;
+
+                if ((selectedTrans.localEulerAngles.z >= -0.1f && selectedTrans.localEulerAngles.z <= 0.1f) || 
+                    (selectedTrans.localEulerAngles.z >= 179.9f && selectedTrans.localEulerAngles.z <= 180.1f))
                 {
-                    selectedTrans.position = new Vector3(ray.origin.x, above - 0.01f, 0);
+                    if (localDistY < 0)
+                    {
+                        selectedTrans.position = new Vector3(ray.origin.x, above - 0.01f, 0);
+                    }
+                    else if (localDistY > 0)
+                    {
+                        selectedTrans.position = new Vector3(ray.origin.x, below + 0.01f, 0);
+                    }
                 }
-                else if (selectedTrans.localEulerAngles.z >= 89.9f && selectedTrans.localEulerAngles.z <= 90.1f)
+
+                else if ((selectedTrans.localEulerAngles.z >= 89.9f && selectedTrans.localEulerAngles.z <= 90.1f) ||
+                         (selectedTrans.localEulerAngles.z >= 269.9f && selectedTrans.localEulerAngles.z <= 270.1f))
                 {
-                    selectedTrans.position = new Vector3(left + 0.01f, ray.origin.y, 0);
-                }
-                else if (selectedTrans.localEulerAngles.z >= 179.9f && selectedTrans.localEulerAngles.z <= 180.1f)
-                {
-                    selectedTrans.position = new Vector3(ray.origin.x, below + 0.01f, 0);
-                }
-                else if (selectedTrans.localEulerAngles.z >= 269.9f && selectedTrans.localEulerAngles.z <= 270.1f)
-                {
-                    selectedTrans.position = new Vector3(right - 0.01f, ray.origin.y, 0);
+                    if (localDistX < 0)
+                    {
+                        selectedTrans.position = new Vector3(right - 0.01f, ray.origin.y, 0);
+                    }
+                    else if (localDistX > 0)
+                    {
+                        selectedTrans.position = new Vector3(left + 0.01f, ray.origin.y, 0);
+                    }
                 }
             }
             else
