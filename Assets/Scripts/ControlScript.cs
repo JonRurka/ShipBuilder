@@ -126,7 +126,7 @@ public class ControlScript : MonoBehaviour
             {
                 Debug.Log("dragging " + selectedObject.name);
                 SendCmd(_type, "dragging-on");
-                //Screen.showCursor = false;
+                Screen.showCursor = false;
                 draging = true;
             }
 
@@ -147,7 +147,7 @@ public class ControlScript : MonoBehaviour
             selected = false;
         }
 
-        if (draging && Input.GetMouseButton(0))
+        if (draging && selectedTrans != null && Input.GetMouseButton(0))
         {
             if (
                 _connecting && 
@@ -158,22 +158,22 @@ public class ControlScript : MonoBehaviour
                 ray.origin.y >= below)
                )
             {
-                Debug.Log(selectedTrans.localEulerAngles.z.ToString());
-                if (selectedTrans.rotation.z >= -0.1f && selectedTrans.rotation.z <= 0.1f)
+                
+                if (selectedTrans.localEulerAngles.z >= -0.1f && selectedTrans.localEulerAngles.z <= 0.1f)
                 {
-                    selectedTrans.position = new Vector3(ray.origin.x, above, 0);
+                    selectedTrans.position = new Vector3(ray.origin.x, above - 0.01f, 0);
                 }
                 else if (selectedTrans.localEulerAngles.z >= 89.9f && selectedTrans.localEulerAngles.z <= 90.1f)
                 {
-                    selectedTrans.position = new Vector3(left, ray.origin.y, 0);
+                    selectedTrans.position = new Vector3(left + 0.01f, ray.origin.y, 0);
                 }
                 else if (selectedTrans.localEulerAngles.z >= 179.9f && selectedTrans.localEulerAngles.z <= 180.1f)
                 {
-                    selectedTrans.position = new Vector3(ray.origin.x, below, 0);
+                    selectedTrans.position = new Vector3(ray.origin.x, below + 0.01f, 0);
                 }
                 else if (selectedTrans.localEulerAngles.z >= 269.9f && selectedTrans.localEulerAngles.z <= 270.1f)
                 {
-                    selectedTrans.position = new Vector3(right, ray.origin.y, 0);
+                    selectedTrans.position = new Vector3(right - 0.01f, ray.origin.y, 0);
                 }
             }
             else
@@ -216,11 +216,23 @@ public class ControlScript : MonoBehaviour
 
         set 
         {
-            float offsetX;
-            float offsetY;
+            float offsetX = 0;
+            float offsetY = 0;
             _connectingObject = value;
-            offsetX = _connectingObject.transform.lossyScale.x / 2;
-            offsetY = _connectingObject.transform.lossyScale.y / 2;
+
+            if (_connectingObject.transform.localEulerAngles.z >= -0.1f && _connectingObject.transform.localEulerAngles.z <= 0.1f ||
+                _connectingObject.transform.localEulerAngles.z >= 179.9f && _connectingObject.transform.localEulerAngles.z <= 180.1f)
+            {
+                offsetX = _connectingObject.transform.lossyScale.x / 2;
+                offsetY = _connectingObject.transform.lossyScale.y / 2;
+            }
+            else if (_connectingObject.transform.localEulerAngles.z >= 89.9f && _connectingObject.transform.localEulerAngles.z <= 90.1f ||
+                     _connectingObject.transform.localEulerAngles.z >= 269.9f && _connectingObject.transform.localEulerAngles.z <= 270.1f)
+            {
+                offsetX = _connectingObject.transform.lossyScale.y / 2;
+                offsetY = _connectingObject.transform.lossyScale.x / 2;
+            }
+
             above = _connectingObject.transform.position.y + offsetY + selectedTrans.lossyScale.y / 2;
             below = _connectingObject.transform.position.y - (offsetY + selectedTrans.lossyScale.y / 2);
             left = _connectingObject.transform.position.x - (offsetX + selectedTrans.lossyScale.x / 2);

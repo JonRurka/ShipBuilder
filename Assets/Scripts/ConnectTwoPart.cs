@@ -8,9 +8,6 @@ public class ConnectTwoPart : MonoBehaviour
 
     public int _index;
     private bool _dragging;
-    private Vector3 _snapLocation;
-    private Vector3 _snapLocationParent;
-    private GameObject _parent;
     public GameObject controller;
     private ControlScript control_S;
 
@@ -42,17 +39,6 @@ public class ConnectTwoPart : MonoBehaviour
         set { _dragging = value; }
     }
 
-    public Vector3 GetSnapLocation(Vector3 pos)
-    {
-        return pos;
-    }
-
-    public GameObject Parent
-    {
-        get { return _parent; }
-        set { _parent = value; }
-    }
-
     void OnTriggerEnter(Collider other)
     {
         if (_dragging && other.tag == CONNECTION_POINT_TAG)
@@ -69,8 +55,6 @@ public class ConnectTwoPart : MonoBehaviour
     {
         if (_dragging && other.tag == CONNECTION_POINT_TAG)
         {
-
-
             if (Input.GetMouseButtonUp(0))
             {
                 Debug.Log(name + " connected to " + other.name); 
