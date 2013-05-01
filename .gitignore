@@ -163,6 +163,7 @@ pip-log.txt
 .DS_Store
 
 #unity
+Temp/*
 .res
 .resG
 .resS
