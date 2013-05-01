@@ -4,24 +4,23 @@ using System.Collections.Generic;
 
 public class StandardHallwayScript : MonoBehaviour 
 {
-    public const string CONNECTION_POINT_TAG = "connectionPoint";
+    public const string CONNECTION_POINT_TAG = "module";
 
     private bool _dragging;
     public int _index;
     public Vector3 _connectLoc;
     public GameObject controller;
+    string[] nameArgs;
     private ControlScript control_S;
-
     public List<GameObject> connectedTo;
 
-    private ConnectTwoPart conPoint;
-    private StandardHallwayScript standardHallway;
-
-    string[] nameArgs;
+    
 
 	// Use this for initialization
 	void Start () 
     {
+        ControlScript.parts[1] = this.gameObject;
+        //ControlScript.parts.Add(this.gameObject);
         control_S = (ControlScript)controller.GetComponent<ControlScript>(); 
 	}
 	
@@ -73,7 +72,7 @@ public class StandardHallwayScript : MonoBehaviour
     {
         if (_dragging && other.tag == CONNECTION_POINT_TAG)
         {
-            Debug.Log(name + " is touching " + other.name);
+            //Debug.Log(name + " is touching " + other.name);
             char[] delims = { '|' };
             nameArgs = other.name.Split(delims);
             control_S.Connecting = true;
@@ -87,8 +86,10 @@ public class StandardHallwayScript : MonoBehaviour
         {
             if (Input.GetMouseButtonUp(0))
             {
-                Debug.Log(name + " connected to " + other.name);
+                //Debug.Log(name + " connected to " + other.name);
+                connectedTo.Clear();
                 connectedTo.Add(other.gameObject);
+                transform.parent = ControlScript.parts[0].transform;
                 control_S.Connecting = false;
             }
         }
@@ -99,19 +100,6 @@ public class StandardHallwayScript : MonoBehaviour
         if (_dragging && other.tag == CONNECTION_POINT_TAG)
         {
             control_S.Connecting = false;
-        }
-    }
-
-    void filterOther(GameObject other, string obName)
-    {
-        switch(obName)
-        {
-            case "commander":
-                conPoint = (ConnectTwoPart)other.GetComponent<ConnectTwoPart>();
-                break;
-            case "standardHallway":
-                standardHallway = (StandardHallwayScript)other.GetComponent<StandardHallwayScript>();
-                break;
         }
     }
 }

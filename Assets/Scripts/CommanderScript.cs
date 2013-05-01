@@ -4,9 +4,8 @@ using System.Collections.Generic;
 
 public class CommanderScript : MonoBehaviour 
 {
-    public const string CONNECTION_POINT_TAG = "connectionPoint";
-
-    public List<GameObject> _parts;
+    public const string CONNECTION_POINT_TAG = "module";
+ 
     public int _partNum;
 
     public GameObject connectionPoint;
@@ -26,8 +25,8 @@ public class CommanderScript : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-        //connectionPoint = GameObject.Find("commander|connectionPoint|" + _index);
-        //connectionPoint_S = (ConnectTwoPart)connectionPoint.GetComponent<ConnectTwoPart>();
+        ControlScript.parts[0] = this.gameObject;
+        //ControlScript.parts.Add(this.gameObject);
         control_S = (ControlScript)controller.GetComponent<ControlScript>();
 	}
 	
@@ -71,17 +70,11 @@ public class CommanderScript : MonoBehaviour
         }
     }
 
-    public void AddPart(GameObject part, int partNum, string type)
-    {
-        _parts.Add(part);
-
-    }
-
-        void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (_dragging && other.tag == CONNECTION_POINT_TAG)
         {
-            Debug.Log(name + " is touching " + other.name); 
+            //Debug.Log(name + " is touching " + other.name); 
             char[] delims = { '|' };
             nameArgs = other.name.Split(delims);
             control_S.Connecting = true;
@@ -95,7 +88,7 @@ public class CommanderScript : MonoBehaviour
         {
             if (Input.GetMouseButtonUp(0))
             {
-                Debug.Log(name + " connected to " + other.name); 
+                //Debug.Log(name + " connected to " + other.name); 
                 connectedTo.Add(other.gameObject);
                 control_S.Connecting = false;
             }

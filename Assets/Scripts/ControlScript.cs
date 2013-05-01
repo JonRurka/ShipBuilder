@@ -1,22 +1,23 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ControlScript : MonoBehaviour 
 {
-    public Transform myTransform;
-
+    private Transform myTransform;
+    public static List<GameObject> parts;
     public float speed;
     public float zoomSpeed;
     private float zoomTmp;
 
     private Ray ray;
     private RaycastHit hit;
-    public Transform selectedTrans;
-    public GameObject selectedObject;
+    private Transform selectedTrans;
+    private GameObject selectedObject;
     private bool selected;
 
     public bool editorMode;
-    public bool draging;
+    private bool draging;
     private string[] objectArgs;
 
     private string _type;
@@ -36,6 +37,9 @@ public class ControlScript : MonoBehaviour
 	void Start () 
     {
         myTransform = transform;
+        parts = new List<GameObject>();
+        parts.Add(new GameObject());
+        parts.Add(new GameObject());
 	}
 	
 	// Update is called once per frame
@@ -106,7 +110,7 @@ public class ControlScript : MonoBehaviour
                 objectArgs = selectedObject.name.Split(delims);
                 _type = objectArgs[0];
                 SendCmd(_type, "connected");
-                Debug.Log(selectedObject.name + " selected");
+                //Debug.Log(selectedObject.name + " selected");
             }
 
             //rotate an object
@@ -126,8 +130,9 @@ public class ControlScript : MonoBehaviour
             //drage the object if in editor mode.
             else if (Input.GetMouseButton(0) && editorMode && selected)
             {
-                Debug.Log("dragging " + selectedObject.name);
+                //Debug.Log("dragging " + selectedObject.name);
                 SendCmd(_type, "dragging-on");
+                selectedTrans.parent = null;
                 Screen.showCursor = false;
                 draging = true;
             }
@@ -252,7 +257,4 @@ public class ControlScript : MonoBehaviour
             right = _connectingObject.transform.position.x + offsetX + selectedTrans.lossyScale.x / 2;
         }
     }
-
-    
-
 }

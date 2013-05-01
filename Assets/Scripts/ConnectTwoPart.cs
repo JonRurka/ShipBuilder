@@ -43,7 +43,7 @@ public class ConnectTwoPart : MonoBehaviour
     {
         if (_dragging && other.tag == CONNECTION_POINT_TAG)
         {
-            Debug.Log(name + " is touching " + other.name); 
+            //Debug.Log(name + " is touching " + other.name); 
             char[] delims = { '|' };
             nameArgs = other.name.Split(delims);
             control_S.Connecting = true;
@@ -57,7 +57,7 @@ public class ConnectTwoPart : MonoBehaviour
         {
             if (Input.GetMouseButtonUp(0))
             {
-                Debug.Log(name + " connected to " + other.name); 
+                //Debug.Log(name + " connected to " + other.name); 
                 connectedTo.Add(other.gameObject);
                 control_S.Connecting = false;
             }

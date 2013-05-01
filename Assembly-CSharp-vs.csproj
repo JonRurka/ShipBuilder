@@ -47,6 +47,7 @@
      <Compile Include="Assets\Scripts\CommanderScript.cs" />
      <Compile Include="Assets\Scripts\ConnectTwoPart.cs" />
      <Compile Include="Assets\Scripts\ControlScript.cs" />
+     <Compile Include="Assets\Scripts\GameGUI.cs" />
      <Compile Include="Assets\Scripts\StandardHallwayScript.cs" />
      <None Include="Assets\Music\Music.txt" />
   </ItemGroup>
