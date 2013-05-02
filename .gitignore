@@ -164,6 +164,7 @@ pip-log.txt
 
 #unity
 Temp/*
+Builds/*
 .res
 .resG
 .resS
